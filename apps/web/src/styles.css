@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  /* Base */
+  --color-border: #1c1c1e;
+  --color-text: #fafafa;
+
+  /* Main backrgound */
+  --color-background: #09090b;
+
+  /* Popup */
+  --color-popup-background: #09090b;
+  --color-backdrop-background: #02081750;
+  --color-popup-border: var(--color-border);
+
+  /* Card */
+  --radius-card: 0.5rem;
+  --color-bookmark-background: #222224;
+  --color-folder-background: #17171a;
+  --color-card-text: var(--color-text);
+  --color-card-border: var(--color-border);
+  --color-card-border-hover: #45556c;
+
+  /* UI */
+  /* Input */
+  --color-input-background: #141415;
+  --color-input-border: #313131;
+  --color-input-text: var(--color-text);
+
+  /* More options */
+
+  --color-options-background: #0f0f10;
+  --color-options-text: var(--color-text);
+  --color-options-border: #313131;
+}
