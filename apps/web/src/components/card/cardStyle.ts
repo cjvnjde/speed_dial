@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const cardStyle = tv({
-  base: "p-2 border rounded transition border-red-50 bg-slate-400/90 rounded-sm w-40 h-34 flex items-center justify-center",
+  base: "p-2 rounded transition bg-card-background rounded-sm w-full h-full flex items-center justify-center",
   variants: {
     dragging: {
       true: "cursor-grabbing",

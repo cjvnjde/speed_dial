@@ -1,1 +1,7 @@
 @import "tailwindcss";
+/* #98B9F2 #918EF4 */
+@theme {
+    --color-primary-background: #141B41;
+    --color-popup-background:#306BAC;
+    --color-card-background: #6F9CEB;
+}

@@ -34,7 +34,7 @@ export const OverlayPopup = ({
           <DialogPanel
             transition
             ref={elementRef}
-            className="max-w-lg rounded-lg space-y-4 bg-white p-12 duration-300 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
+            className="mx-20 w-full rounded-lg space-y-4 bg-popup-background p-12 duration-300 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
           >
             {children}
           </DialogPanel>

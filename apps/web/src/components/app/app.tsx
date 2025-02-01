@@ -12,12 +12,12 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { useCallback, useEffect, useState } from "react";
-import { useCollisionDetection } from "../hooks/useCollisionDetection";
-import { CardOverlay } from "../components/card-overlay";
-import { SortingGrid } from "../components/sorting-grid";
-import { bookmarks } from "../states/bookmarks";
-import { BookmarkTreeNode } from "../types/BookmarkTreeNode";
-import { parseDndId } from "../utils/dndId";
+import { useCollisionDetection } from "../../hooks/useCollisionDetection";
+import { CardOverlay } from "../card-overlay";
+import { SortingGrid } from "../sorting-grid";
+import { bookmarks } from "../../states/bookmarks";
+import { BookmarkTreeNode } from "../../types/BookmarkTreeNode";
+import { parseDndId } from "../../utils/dndId";
 
 const dropAnimation: DropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({
@@ -100,7 +100,7 @@ export const App = () => {
   }, []);
 
   return (
-    <div className="flex h-screen w-full justify-center items-center">
+    <div className="flex h-screen bg-primary-background w-full justify-center items-center">
       <DndContext
         collisionDetection={collisionDetection}
         onDragEnd={handleDragEnd}

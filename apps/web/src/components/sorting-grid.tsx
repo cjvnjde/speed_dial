@@ -21,7 +21,7 @@ export const SortingGrid = ({ items, id }: SortingGridProps) => {
   return (
     <div
       ref={setNodeRef}
-      className="min-w-[400px]  flex gap-2 flex-row flex-wrap min-h-[400px]"
+      className="grid p-4 w-full auto-rows-[140px] grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] justify-items-center gap-4"
     >
       <SortableContext
         items={items}
