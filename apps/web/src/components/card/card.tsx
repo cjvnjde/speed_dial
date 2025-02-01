@@ -48,12 +48,12 @@ export const Card = ({ id, children, bookmark }: SortableItemProps) => {
     {
       disabled: !(isHovered && !isOpen && bookmark.type === "folder"),
       delay: 1000,
-    },
+    }
   );
 
   const handlePopupClose = useCallback(() => {
     setActiveGridId((previous) =>
-      previous.filter((value) => value !== String(id)),
+      previous.filter((value) => value !== String(id))
     );
   }, [id, setActiveGridId]);
 

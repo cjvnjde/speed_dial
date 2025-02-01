@@ -11,24 +11,24 @@ export function useCollisionDetection(gap = 0) {
       const centerRect = centerOfRectangle(
         collisionRect,
         collisionRect.left,
-        collisionRect.top,
+        collisionRect.top
       );
       const collisions: CollisionDescriptor[] = [];
 
       const activeDropableContainer = droppableContainers.find(
-        (container) => container.id === active.id,
+        (container) => container.id === active.id
       );
 
       let distBetweenActive = Infinity;
 
       if (activeDropableContainer && activeDropableContainer.node.current) {
         const centerDroppable = centerOfRectangle(
-          activeDropableContainer.node.current.getBoundingClientRect(),
+          activeDropableContainer.node.current.getBoundingClientRect()
         );
         distBetweenActive = distanceBetween(centerDroppable, centerRect);
       }
 
-      const itemSize = (active.rect.current.initial?.width ?? 0) * 1;
+      const itemSize = (active.rect.current.initial?.width ?? 0);
       const threshold = itemSize + gap;
 
       if (distBetweenActive < threshold) {
@@ -54,14 +54,14 @@ export function useCollisionDetection(gap = 0) {
       }
 
       collisions.sort(
-        ({ data: { value: a } }, { data: { value: b } }) => a - b,
+        ({ data: { value: a } }, { data: { value: b } }) => a - b
       );
 
       previousCandidate.current = collisions;
 
       return previousCandidate.current;
     },
-    [gap],
+    [gap]
   );
 
   const onDragEnd = useCallback(() => {

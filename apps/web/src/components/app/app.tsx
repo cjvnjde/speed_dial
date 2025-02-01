@@ -66,7 +66,7 @@ export const App = () => {
 
       setActiveId(null);
     },
-    [onDragEnd],
+    [onDragEnd]
   );
 
   const sensors = useSensors(
@@ -74,7 +74,7 @@ export const App = () => {
       activationConstraint: {
         distance: 8,
       },
-    }),
+    })
   );
 
   const handleDragOver = useCallback((event: DragOverEvent) => {
@@ -83,10 +83,10 @@ export const App = () => {
     const overId = String(over?.id);
     const activeId = String(active?.id);
 
-    const isParent = Boolean(over?.data.current?.sortable.containerId);
+    const isParent = Boolean(over?.data.current?.sortable?.containerId);
     const shouldMove =
-      over?.data.current?.sortable.containerId !==
-      active.data.current?.sortable.containerId;
+      over?.data.current?.sortable?.containerId !==
+      active.data.current?.sortable?.containerId;
 
     if (shouldMove && over && !over.disabled && activeId !== overId) {
       const [newIndex] = bookmarks.get(parseDndId(overId));

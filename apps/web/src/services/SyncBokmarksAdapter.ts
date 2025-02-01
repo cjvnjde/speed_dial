@@ -72,7 +72,7 @@ export class SyncBookmarksAdapter {
 
   private buildTree(node: BookmarkTreeNode): BookmarkTreeNode {
     const children = this.getSortedChildren(node.id).map((n) =>
-      this.buildTree(n),
+      this.buildTree(n)
     );
 
     return { ...node, children };
@@ -118,7 +118,7 @@ export class SyncBookmarksAdapter {
   }
 
   public search(
-    query: string | { query?: string; url?: string; title?: string },
+    query: string | { query?: string; url?: string; title?: string }
   ): BookmarkTreeNode[] {
     const searchParams = typeof query === "string" ? { query } : query;
     const searchQuery = searchParams.query?.toLowerCase();
@@ -158,7 +158,7 @@ export class SyncBookmarksAdapter {
     this.getSortedChildren(parentId)
       .filter((n) => (n.index ?? 0) >= index)
       .forEach((n) =>
-        this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 }),
+        this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 })
       );
 
     const newNode: BookmarkTreeNode = {
@@ -199,13 +199,13 @@ export class SyncBookmarksAdapter {
       this.getSortedChildren(oldParentId)
         .filter((n) => (n.index ?? 0) > (node.index ?? 0))
         .forEach((n) =>
-          this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 }),
+          this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 })
         );
 
       this.getSortedChildren(newParentId)
         .filter((n) => (n.index ?? 0) >= newIndex)
         .forEach((n) =>
-          this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 }),
+          this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 })
         );
     } else if (newIndex !== node.index) {
       const children = this.getSortedChildren(oldParentId);
@@ -262,7 +262,7 @@ export class SyncBookmarksAdapter {
     this.getSortedChildren(parentId)
       .filter((n) => (n.index ?? 0) > (node.index ?? 0))
       .forEach((n) =>
-        this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 }),
+        this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 })
       );
 
     this.nodes.delete(id);
@@ -292,7 +292,7 @@ export class SyncBookmarksAdapter {
     this.getSortedChildren(parentId)
       .filter((n) => (n.index ?? 0) > (node.index ?? 0))
       .forEach((n) =>
-        this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 }),
+        this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 })
       );
 
     this.bookmarksApi.removeTree(id);

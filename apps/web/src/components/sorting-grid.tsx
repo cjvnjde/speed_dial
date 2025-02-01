@@ -1,10 +1,11 @@
+import { useDroppable } from "@dnd-kit/core";
 import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
-import { Card } from "./card/card";
 import { useAtomValue } from "jotai";
+import { useOpenDelay } from "../hooks/useOpenDelay";
 import { activeGridIdState } from "../states/activeGridIdState";
 import { BookmarkTreeNode } from "../types/BookmarkTreeNode";
-import { useDroppable } from "@dnd-kit/core";
 import { generateDndId } from "../utils/dndId";
+import { Card } from "./card/card";
 
 type SortingGridProps = {
   items: BookmarkTreeNode[];
@@ -13,9 +14,10 @@ type SortingGridProps = {
 
 export const SortingGrid = ({ items, id }: SortingGridProps) => {
   const activeGridId = useAtomValue(activeGridIdState);
+  const isOpen = useOpenDelay(activeGridId[activeGridId.length - 1] === id);
   const { setNodeRef } = useDroppable({
     id: generateDndId(id, "droppable"),
-    disabled: activeGridId[activeGridId.length - 1] !== id,
+    disabled: !isOpen,
   });
 
   return (
@@ -27,7 +29,7 @@ export const SortingGrid = ({ items, id }: SortingGridProps) => {
         items={items}
         strategy={rectSortingStrategy}
         id={generateDndId(id, "sortable")}
-        disabled={activeGridId[activeGridId.length - 1] !== id}
+        disabled={!isOpen}
       >
         {items.map((bookmark) => (
           <Card key={bookmark.id} id={bookmark.id} bookmark={bookmark}>

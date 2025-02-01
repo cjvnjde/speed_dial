@@ -69,7 +69,7 @@ export class BookmarksApi {
 
   private buildTree(node: BookmarkTreeNode): BookmarkTreeNode {
     const children = this.getSortedChildren(node.id).map((n) =>
-      this.buildTree(n),
+      this.buildTree(n)
     );
 
     return { ...node, children };
@@ -115,7 +115,7 @@ export class BookmarksApi {
   }
 
   public async search(
-    query: string | { query?: string; url?: string; title?: string },
+    query: string | { query?: string; url?: string; title?: string }
   ): Promise<BookmarkTreeNode[]> {
     const searchParams = typeof query === "string" ? { query } : query;
     const searchQuery = searchParams.query?.toLowerCase();
@@ -155,7 +155,7 @@ export class BookmarksApi {
     this.getSortedChildren(parentId)
       .filter((n) => (n.index ?? 0) >= index)
       .forEach((n) =>
-        this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 }),
+        this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 })
       );
 
     const newNode: BookmarkTreeNode = {
@@ -182,7 +182,7 @@ export class BookmarksApi {
 
   public async move(
     id: string,
-    destination: Destination,
+    destination: Destination
   ): Promise<BookmarkTreeNode> {
     const node = this.getNode(id);
 
@@ -199,13 +199,13 @@ export class BookmarksApi {
       this.getSortedChildren(oldParentId)
         .filter((n) => (n.index ?? 0) > (node.index ?? 0))
         .forEach((n) =>
-          this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 }),
+          this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 })
         );
 
       this.getSortedChildren(newParentId)
         .filter((n) => (n.index ?? 0) >= newIndex)
         .forEach((n) =>
-          this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 }),
+          this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 })
         );
     } else if (newIndex !== node.index) {
       const children = this.getSortedChildren(oldParentId);
@@ -229,7 +229,7 @@ export class BookmarksApi {
 
   public async update(
     id: string,
-    changes: UpdateChanges,
+    changes: UpdateChanges
   ): Promise<BookmarkTreeNode> {
     const node = this.nodes.get(id);
     if (!node) throw new Error("Node not found");
@@ -261,7 +261,7 @@ export class BookmarksApi {
     this.getSortedChildren(parentId)
       .filter((n) => (n.index ?? 0) > (node.index ?? 0))
       .forEach((n) =>
-        this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 }),
+        this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 })
       );
 
     this.nodes.delete(id);
@@ -289,7 +289,7 @@ export class BookmarksApi {
     this.getSortedChildren(parentId)
       .filter((n) => (n.index ?? 0) > (node.index ?? 0))
       .forEach((n) =>
-        this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 }),
+        this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 })
       );
 
     this.onRemoved.emit(id, {

@@ -12,7 +12,7 @@ function createActionOnHold(
     disabled: false,
     delay: 0,
     threshold: 10,
-  },
+  }
 ) {
   let timeout: ReturnType<typeof setTimeout> | null = null;
   let initialX = 0;
@@ -59,7 +59,7 @@ export function useActionOnHold(
   }: Partial<{
     disabled: boolean;
     delay: number;
-  }> = { disabled: false, delay: 0 },
+  }> = { disabled: false, delay: 0 }
 ) {
   useEffect(() => {
     return createActionOnHold(callback, { disabled, delay });

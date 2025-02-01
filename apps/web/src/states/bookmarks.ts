@@ -409,5 +409,5 @@ const bookmarksInitialState: BookmarkTreeNode[] = [
 ];
 
 export const bookmarks = new SyncBookmarksAdapter(
-  new BookmarksApi(bookmarksInitialState),
+  new BookmarksApi(bookmarksInitialState)
 );

@@ -9,7 +9,7 @@ export function useOnHoverOutside(
   }: Partial<{
     disabled: boolean;
     delay: number;
-  }> = { disabled: false, delay: 0 },
+  }> = { disabled: false, delay: 0 }
 ) {
   const { isHovered, ref } = useIsHovered({ disabled });
   const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);

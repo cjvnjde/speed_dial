@@ -2,7 +2,7 @@ import { Coordinates } from "@dnd-kit/utilities";
 
 export function isHovered(
   pointer: Coordinates | null,
-  rect: DOMRect | undefined,
+  rect: DOMRect | undefined
 ) {
   if (!pointer || !rect) {
     return false;

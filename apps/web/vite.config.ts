@@ -7,7 +7,7 @@ import { nxCopyAssetsPlugin } from "@nx/vite/plugins/nx-copy-assets.plugin";
 
 export default defineConfig({
   root: __dirname,
-  base: 'the-ultimate-homepage-bookmarks-speed-dial-hub',
+  base: process.env.BASE ?? ".",
   cacheDir: "../../node_modules/.vite/apps/web",
   server: {
     port: 4200,
