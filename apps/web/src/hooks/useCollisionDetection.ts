@@ -28,7 +28,7 @@ export function useCollisionDetection(gap = 0) {
         distBetweenActive = distanceBetween(centerDroppable, centerRect);
       }
 
-      const itemSize = (active.rect.current.initial?.width ?? 0);
+      const itemSize = active.rect.current.initial?.width ?? 0;
       const threshold = itemSize + gap;
 
       if (distBetweenActive < threshold) {

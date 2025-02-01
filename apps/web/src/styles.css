@@ -1,7 +1,21 @@
 @import "tailwindcss";
-/* #98B9F2 #918EF4 */
+
 @theme {
-  --color-primary-background: #141b41;
-  --color-popup-background: #306bac;
-  --color-card-background: #6f9ceb;
+  /* Base */
+  --color-border: #1c1c1e;
+
+  /* Main backrgound */
+  --color-background: #09090b;
+
+  /* Popup */
+  --color-popup-background: #09090b;
+  --color-backdrop-background: #02081750;
+  --color-popup-border: var(--color-border);
+
+  /* Card */
+  --radius-card: 0.5rem;
+  --color-bookmark-background: #222224;
+  --color-folder-background: #17171a;
+  --color-card-text: #fafafa;
+  --color-card-border: var(--color-border);
 }

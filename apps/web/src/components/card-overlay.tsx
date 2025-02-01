@@ -1,4 +1,4 @@
-import { cardStyle } from "./card/cardStyle";
+import { cardStyle } from "./card/card-style";
 import { SortableItemProps } from "./card/card-props";
 
 export const CardOverlay = ({

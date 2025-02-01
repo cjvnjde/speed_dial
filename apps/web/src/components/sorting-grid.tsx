@@ -6,6 +6,7 @@ import { activeGridIdState } from "../states/activeGridIdState";
 import { BookmarkTreeNode } from "../types/BookmarkTreeNode";
 import { generateDndId } from "../utils/dndId";
 import { Card } from "./card/card";
+import { CardAddNew } from "./card-add-new";
 
 type SortingGridProps = {
   items: BookmarkTreeNode[];
@@ -23,7 +24,7 @@ export const SortingGrid = ({ items, id }: SortingGridProps) => {
   return (
     <div
       ref={setNodeRef}
-      className="grid p-4 w-full auto-rows-[140px] grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] justify-items-center gap-4"
+      className="grid p-4 w-full auto-rows-[160px] grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] justify-items-center gap-4"
     >
       <SortableContext
         items={items}
@@ -37,6 +38,7 @@ export const SortingGrid = ({ items, id }: SortingGridProps) => {
           </Card>
         ))}
       </SortableContext>
+      <CardAddNew parentId={id} />
     </div>
   );
 };

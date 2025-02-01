@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { useMergeRefs } from "../../hooks/useMergeRefs";
 import { useIsHovered } from "../../hooks/useIsHovered";
-import { cardStyle } from "./cardStyle";
+import { cardStyle } from "./card-style";
 import { CSS } from "@dnd-kit/utilities";
 import { SortableItemProps } from "./card-props";
 import { useCallback } from "react";
@@ -67,7 +67,11 @@ export const Card = ({ id, children, bookmark }: SortableItemProps) => {
     <>
       <div
         ref={ref}
-        className={cardStyle({ dragging: isDragging, hovered: isHovered })}
+        className={cardStyle({
+          dragging: isDragging,
+          hovered: isHovered,
+          type: bookmark.type === "folder" ? "folder" : "bookmark",
+        })}
         style={style}
         onClick={handleOnClick}
         {...attributes}

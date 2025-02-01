@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
-import { App } from "./components/app/app";
+import { SpeedDial } from "./components/speed-dial/speed-dial";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -8,6 +8,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <StrictMode>
-    <App />
+    <SpeedDial />
   </StrictMode>
 );

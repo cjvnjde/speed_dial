@@ -29,7 +29,7 @@ const dropAnimation: DropAnimation = {
   }),
 };
 
-export const App = () => {
+export const SpeedDial = () => {
   const [activeId, setActiveId] = useState<null | BookmarkTreeNode>(null);
   const [items, setItems] = useState<BookmarkTreeNode[]>([]);
 
@@ -100,7 +100,7 @@ export const App = () => {
   }, []);
 
   return (
-    <div className="flex h-screen bg-primary-background w-full justify-center items-center">
+    <div className="flex h-screen bg-background w-full justify-center items-center">
       <DndContext
         collisionDetection={collisionDetection}
         onDragEnd={handleDragEnd}
