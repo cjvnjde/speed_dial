@@ -63,31 +63,51 @@ export const Card = ({ id, children, bookmark }: SortableItemProps) => {
     }
   }, [bookmark.id, bookmark.type, setActiveGridId]);
 
+  if (bookmark.type === "folder") {
+    return (
+      <>
+        <button
+          ref={ref}
+          className={cardStyle({
+            dragging: isDragging,
+            hovered: isHovered,
+            type: "folder",
+          })}
+          style={style}
+          onClick={handleOnClick}
+          {...attributes}
+          {...listeners}
+        >
+          {children}
+        </button>
+        <OverlayPopup
+          isOpen={isOpen}
+          onClose={handlePopupClose}
+          isActive={
+            isActive && openedGrids[openedGrids.length - 1] === String(id)
+          }
+        >
+          <SortingGrid items={bookmark.children ?? []} id={bookmark.id} />
+        </OverlayPopup>
+      </>
+    );
+  }
+
   return (
-    <>
-      <div
-        ref={ref}
-        className={cardStyle({
-          dragging: isDragging,
-          hovered: isHovered,
-          type: bookmark.type === "folder" ? "folder" : "bookmark",
-        })}
-        style={style}
-        onClick={handleOnClick}
-        {...attributes}
-        {...listeners}
-      >
-        {children}
-      </div>
-      <OverlayPopup
-        isOpen={isOpen}
-        onClose={handlePopupClose}
-        isActive={
-          isActive && openedGrids[openedGrids.length - 1] === String(id)
-        }
-      >
-        <SortingGrid items={bookmark.children ?? []} id={bookmark.id} />
-      </OverlayPopup>
-    </>
+    <a
+      href={bookmark.url}
+      ref={ref}
+      className={cardStyle({
+        dragging: isDragging,
+        hovered: isHovered,
+        type: "bookmark",
+      })}
+      style={style}
+      onClick={handleOnClick}
+      {...attributes}
+      {...listeners}
+    >
+      {children}
+    </a>
   );
 };

@@ -1,3 +1,3 @@
 import { atom } from "jotai";
 
-export const activeGridIdState = atom<string[]>(["root"]);
+export const activeGridIdState = atom<string[]>(["root________"]);

@@ -113,7 +113,7 @@ export const SpeedDial = () => {
           },
         }}
       >
-        <SortingGrid items={items} id="root" />
+        <SortingGrid items={items} id="root________" />
         <DragOverlay dropAnimation={dropAnimation}>
           {activeId ? <CardOverlay>{activeId.title}</CardOverlay> : null}
         </DragOverlay>
