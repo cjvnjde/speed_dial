@@ -100,7 +100,7 @@ export const SpeedDial = () => {
   }, []);
 
   return (
-    <div className="flex h-screen bg-background w-full justify-center items-center">
+    <div className="flex justify-center items-center">
       <DndContext
         collisionDetection={collisionDetection}
         onDragEnd={handleDragEnd}

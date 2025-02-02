@@ -15,7 +15,7 @@ const ovelayPopupStyle = tv({
     backdrop:
       "fixed inset-0 transition ease-out duration-300 data-[closed]:opacity-0",
     panel:
-      "mx-20 w-full border border-popup-border rounded-lg space-y-4 bg-popup-background p-4 duration-300 ease-out data-[closed]:scale-95 data-[closed]:opacity-0",
+      "mx-20 max-w-[1000px] w-full  border border-popup-border rounded-lg space-y-4 bg-popup-background p-4 duration-300 ease-out data-[closed]:scale-95 data-[closed]:opacity-0",
   },
   variants: {
     outside: {
@@ -48,7 +48,7 @@ export const OverlayPopup = ({
   return (
     <Dialog open={isOpen} onClose={onClose} className={container()}>
       <DialogBackdrop transition className={backdrop()} />
-      <div className="fixed inset-0 w-screen overflow-y-auto p-4">
+      <div className="fixed inset-0  overflow-y-auto p-4">
         <div className="flex min-h-full items-center justify-center">
           <DialogPanel transition ref={elementRef} className={panel()}>
             {children}
