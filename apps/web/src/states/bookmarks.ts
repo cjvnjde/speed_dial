@@ -1,6 +1,6 @@
 import { BookmarkTreeNode } from "../types/BookmarkTreeNode";
 import { BookmarksApi } from "../services/BookmarksApi";
-import { SyncBookmarksAdapter } from "../services/SyncBokmarksAdapter";
+import { atom } from "jotai";
 
 const bookmarksInitialState: BookmarkTreeNode[] = [
   {
@@ -408,6 +408,6 @@ const bookmarksInitialState: BookmarkTreeNode[] = [
   },
 ];
 
-export const bookmarks = new SyncBookmarksAdapter(
-  new BookmarksApi(bookmarksInitialState)
-);
+export const bookmarks = new BookmarksApi(bookmarksInitialState);
+
+export const bookmarksState = atom<BookmarkTreeNode[]>([]);

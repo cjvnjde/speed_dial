@@ -15,15 +15,21 @@ import { useCallback, useEffect, useState } from "react";
 import { useCollisionDetection } from "../../hooks/useCollisionDetection";
 import { CardOverlay } from "../card-overlay";
 import { SortingGrid } from "../sorting-grid";
-import { bookmarks } from "../../states/bookmarks";
+import { bookmarks, bookmarksState } from "../../states/bookmarks";
 import { BookmarkTreeNode } from "../../types/BookmarkTreeNode";
 import { parseDndId } from "../../utils/dndId";
+import { useAtom } from "jotai";
 
 const dropAnimation: DropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({
     styles: {
       active: {
         opacity: "1",
+        scale: "1.05",
+      },
+      dragOverlay: {
+        opacity: "0.8",
+        scale: "1",
       },
     },
   }),
@@ -31,35 +37,34 @@ const dropAnimation: DropAnimation = {
 
 export const SpeedDial = () => {
   const [activeId, setActiveId] = useState<null | BookmarkTreeNode>(null);
-  const [items, setItems] = useState<BookmarkTreeNode[]>([]);
+  const [items, setItems] = useAtom(bookmarksState);
 
   useEffect(() => {
-    const tree = bookmarks.getTree();
-    setItems(tree);
+    bookmarks.getTree().then((tree) => setItems(tree));
   }, []);
 
   const { collisionDetection, onDragEnd } = useCollisionDetection(16);
 
-  const handleDragStart = useCallback((event: DragStartEvent) => {
+  const handleDragStart = useCallback(async (event: DragStartEvent) => {
     const { active } = event;
 
-    const [current] = bookmarks.get(String(active?.id));
+    const [current] = await bookmarks.get(String(active?.id));
     setActiveId(current);
   }, []);
 
   const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
+    async (event: DragEndEvent) => {
       const { active, over } = event;
 
       const overId = String(over?.id);
       const activeId = String(active?.id);
 
       if (over && activeId !== overId) {
-        const [newIndex] = bookmarks.get(parseDndId(overId));
+        const [newIndex] = await bookmarks.get(parseDndId(overId));
         bookmarks.move(activeId, {
           index: newIndex?.index ?? 0,
         });
-        setItems(bookmarks.getTree());
+        setItems(await bookmarks.getTree());
       }
 
       onDragEnd();
@@ -77,25 +82,22 @@ export const SpeedDial = () => {
     })
   );
 
-  const handleDragOver = useCallback((event: DragOverEvent) => {
+  const handleDragOver = useCallback(async (event: DragOverEvent) => {
     const { over, active } = event;
 
     const overId = String(over?.id);
     const activeId = String(active?.id);
 
     const isParent = Boolean(over?.data.current?.sortable?.containerId);
-    const shouldMove =
-      over?.data.current?.sortable?.containerId !==
-      active.data.current?.sortable?.containerId;
 
-    if (shouldMove && over && !over.disabled && activeId !== overId) {
-      const [newIndex] = bookmarks.get(parseDndId(overId));
+    if (over && !over.disabled && activeId !== overId) {
+      const [newIndex] = await bookmarks.get(parseDndId(overId));
 
       bookmarks.move(activeId, {
         index: newIndex?.index ?? 0,
         parentId: isParent ? newIndex?.parentId : newIndex?.id,
       });
-      setItems(bookmarks.getTree());
+      setItems(await bookmarks.getTree());
     }
   }, []);
 

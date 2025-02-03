@@ -3,9 +3,10 @@ import { IconPlus } from "@tabler/icons-react";
 import { OverlayPopup } from "./overlay-popup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { bookmarks } from "../states/bookmarks";
+import { bookmarks, bookmarksState } from "../states/bookmarks";
 import { Input } from "./input";
 import { WithLabel } from "./with-label";
+import { useAtom, useSetAtom } from "jotai";
 
 type CardAddNewProps = {
   parentId: string | number;
@@ -62,6 +63,8 @@ const AddNewPopup = ({
 export const CardAddNew = ({ parentId }: CardAddNewProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const setItems = useSetAtom(bookmarksState);
+
   return (
     <>
       <button
@@ -74,14 +77,15 @@ export const CardAddNew = ({ parentId }: CardAddNewProps) => {
       <AddNewPopup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onCreate={(data) => {
-          console.log(data, parentId);
-          bookmarks.create({
+        onCreate={async (data) => {
+          await bookmarks.create({
             parentId: String(parentId),
             title: data.title,
             url: data.url,
             type: data.type,
           });
+
+          setItems(await bookmarks.getTree());
         }}
       />
     </>

@@ -1,4 +1,3 @@
-// ai-generated code.  Do not use it in production. Only for dev purposes.
 import {
   BookmarkTreeNode,
   CreateDetails,
