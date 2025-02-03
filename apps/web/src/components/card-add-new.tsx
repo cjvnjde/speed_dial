@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { bookmarks, bookmarksState } from "../states/bookmarks";
 import { Input } from "./input";
 import { WithLabel } from "./with-label";
-import { useAtom, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 
 type CardAddNewProps = {
   parentId: string | number;
