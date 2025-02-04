@@ -4,27 +4,7 @@ import {
   Destination,
   UpdateChanges,
 } from "../types/BookmarkTreeNode";
-
-class WebExtEventEmitter<T extends (...args: unknown[]) => void> {
-  private listeners: T[] = [];
-
-  addListener(callback: T) {
-    this.listeners.push(callback);
-  }
-
-  removeListener(callback: T) {
-    const index = this.listeners.indexOf(callback);
-    if (index >= 0) this.listeners.splice(index, 1);
-  }
-
-  hasListener(callback: T) {
-    return this.listeners.includes(callback);
-  }
-
-  emit(...args: Parameters<T>) {
-    this.listeners.slice().forEach((listener) => listener(...args));
-  }
-}
+import { WebExtEventEmitter } from "./WebExtEventEmitter";
 
 export class BookmarksApi {
   private nodes = new Map<string, BookmarkTreeNode>();
