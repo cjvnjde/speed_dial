@@ -1,4 +1,5 @@
 import {
+  BookmarksApiStore,
   BookmarkTreeNode,
   CreateDetails,
   Destination,
@@ -6,7 +7,7 @@ import {
 } from "../types/BookmarkTreeNode";
 import { WebExtEventEmitter } from "./WebExtEventEmitter";
 
-export class BookmarksApi {
+export class BookmarksApi implements BookmarksApiStore {
   private nodes = new Map<string, BookmarkTreeNode>();
   private rootParentId = "root________";
 
@@ -68,7 +69,7 @@ export class BookmarksApi {
 
         return null;
       })
-      .filter(Boolean) as BookmarkTreeNode[];
+      .filter(Boolean);
   }
 
   public async getChildren(id: string): Promise<BookmarkTreeNode[]> {
