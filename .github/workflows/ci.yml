@@ -1,7 +1,7 @@
 name: CI
 
 env:
-  BASE: "the-ultimate-homepage-bookmarks-speed-dial-hub"
+  BASE: "/the-ultimate-homepage-bookmarks-speed-dial-hub"
 
 on:
   push:
