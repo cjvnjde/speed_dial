@@ -57,7 +57,15 @@ export function useCollisionDetection(gap = 0) {
         ({ data: { value: a } }, { data: { value: b } }) => a - b
       );
 
-      previousCandidate.current = collisions;
+      const items = collisions.filter(
+        ({ id }) => !String(id).endsWith("droppable")
+      );
+
+      if (items.length > 0) {
+        previousCandidate.current = items;
+      } else {
+        previousCandidate.current = collisions;
+      }
 
       return previousCandidate.current;
     },

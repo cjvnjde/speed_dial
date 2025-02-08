@@ -6,9 +6,11 @@ import {
   UpdateChanges,
 } from "../types/BookmarkTreeNode";
 import { WebExtEventEmitter } from "./WebExtEventEmitter";
+import { BookmarkTreeMap } from "./BookmarkTreeMap";
 
-export class BookmarksApi implements BookmarksApiStore {
-  private nodes = new Map<string, BookmarkTreeNode>();
+export class BookmarksApi {
+  private nodes = new BookmarkTreeMap();
+
   private rootParentId = "root________";
 
   public readonly onCreated = new WebExtEventEmitter();
@@ -16,28 +18,7 @@ export class BookmarksApi implements BookmarksApiStore {
   public readonly onChanged = new WebExtEventEmitter();
   public readonly onMoved = new WebExtEventEmitter();
 
-  constructor(initialState: BookmarkTreeNode[] = []) {
-    this.populateNodes(initialState, this.rootParentId);
-  }
-
-  private populateNodes(nodes: BookmarkTreeNode[], parentId: string) {
-    nodes.forEach((node, index) => {
-      const newNode: BookmarkTreeNode = {
-        ...node,
-        parentId: node.parentId || parentId,
-        index: node.index ?? index,
-        children: undefined,
-      };
-
-      this.nodes.set(newNode.id, newNode);
-
-      if (node.children) {
-        this.populateNodes(node.children, newNode.id);
-      }
-    });
-  }
-
-  private getNode(id: string): BookmarkTreeNode | undefined {
+  private getNode(id: string) {
     return this.nodes.get(id);
   }
 
@@ -55,8 +36,7 @@ export class BookmarksApi implements BookmarksApiStore {
     return { ...node, children };
   }
 
-  // Implemented API methods
-  public async get(idOrIdList: string | string[]): Promise<BookmarkTreeNode[]> {
+  public get(idOrIdList: string | string[]): BookmarkTreeNode[] {
     const ids = Array.isArray(idOrIdList) ? idOrIdList : [idOrIdList];
 
     return ids
@@ -72,11 +52,11 @@ export class BookmarksApi implements BookmarksApiStore {
       .filter(Boolean);
   }
 
-  public async getChildren(id: string): Promise<BookmarkTreeNode[]> {
+  public getChildren(id: string): BookmarkTreeNode[] {
     return this.getSortedChildren(id).map((n) => this.buildTree(n));
   }
 
-  public async getRecent(numberOfItems: number): Promise<BookmarkTreeNode[]> {
+  public getRecent(numberOfItems: number): BookmarkTreeNode[] {
     return Array.from(this.nodes.values())
       .filter((n) => n.type === "bookmark")
       .sort((a, b) => (b.dateAdded ?? 0) - (a.dateAdded ?? 0))
@@ -84,19 +64,19 @@ export class BookmarksApi implements BookmarksApiStore {
       .map((n) => this.buildTree(n));
   }
 
-  public async getTree(): Promise<BookmarkTreeNode[]> {
+  public getTree(): BookmarkTreeNode[] {
     return this.getChildren(this.rootParentId);
   }
 
-  public async getSubTree(id: string): Promise<BookmarkTreeNode[]> {
+  public getSubTree(id: string): BookmarkTreeNode[] {
     const node = this.getNode(id);
 
     return node ? [this.buildTree(node)] : [];
   }
 
-  public async search(
+  public search(
     query: string | { query?: string; url?: string; title?: string }
-  ): Promise<BookmarkTreeNode[]> {
+  ): BookmarkTreeNode[] {
     const searchParams = typeof query === "string" ? { query } : query;
     const searchQuery = searchParams.query?.toLowerCase();
     const searchUrl = searchParams.url?.toLowerCase();
@@ -120,7 +100,7 @@ export class BookmarksApi implements BookmarksApiStore {
       .map((n) => this.buildTree(n));
   }
 
-  public async create(bookmark: CreateDetails): Promise<BookmarkTreeNode> {
+  public create(bookmark: CreateDetails): BookmarkTreeNode {
     const id = `id-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
     const parentId = bookmark.parentId || "unfiled_____";
     const parent = this.getNode(parentId);
@@ -153,17 +133,17 @@ export class BookmarksApi implements BookmarksApiStore {
     this.nodes.set(id, newNode);
 
     if (parent) {
-      this.nodes.set(parent.id, { ...parent, dateGroupModified: Date.now() });
+      this.nodes.set(parent.id, {
+        ...parent,
+        dateGroupModified: Date.now(),
+      });
     }
 
     this.onCreated.emit(id, { ...newNode });
     return newNode;
   }
 
-  public async move(
-    id: string,
-    destination: Destination
-  ): Promise<BookmarkTreeNode> {
+  public move(id: string, destination: Destination): BookmarkTreeNode {
     const node = this.getNode(id);
 
     if (!node) {
@@ -178,15 +158,11 @@ export class BookmarksApi implements BookmarksApiStore {
     if (newParentId !== oldParentId) {
       this.getSortedChildren(oldParentId)
         .filter((n) => (n.index ?? 0) > (node.index ?? 0))
-        .forEach((n) =>
-          this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 })
-        );
+        .map((n) => this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 }));
 
       this.getSortedChildren(newParentId)
         .filter((n) => (n.index ?? 0) >= newIndex)
-        .forEach((n) =>
-          this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 })
-        );
+        .map((n) => this.nodes.set(n.id, { ...n, index: (n.index ?? 0) + 1 }));
     } else if (newIndex !== node.index) {
       const children = this.getSortedChildren(oldParentId);
       children.splice(node.index ?? 0, 1);
@@ -207,11 +183,8 @@ export class BookmarksApi implements BookmarksApiStore {
     return movedNode;
   }
 
-  public async update(
-    id: string,
-    changes: UpdateChanges
-  ): Promise<BookmarkTreeNode> {
-    const node = this.nodes.get(id);
+  public update(id: string, changes: UpdateChanges): BookmarkTreeNode {
+    const node = this.getNode(id);
     if (!node) throw new Error("Node not found");
 
     const updatedNode = { ...node };
@@ -229,8 +202,8 @@ export class BookmarksApi implements BookmarksApiStore {
     return updatedNode;
   }
 
-  public async remove(id: string): Promise<void> {
-    const node = this.nodes.get(id);
+  public remove(id: string): void {
+    const node = this.getNode(id);
     if (!node) throw new Error("Node not found");
 
     if (node.type === "folder" && this.getSortedChildren(id).length > 0) {
@@ -253,7 +226,7 @@ export class BookmarksApi implements BookmarksApiStore {
     });
   }
 
-  public async removeTree(id: string): Promise<void> {
+  public removeTree(id: string): void {
     const node = this.nodes.get(id);
     if (!node) throw new Error("Node not found");
 

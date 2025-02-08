@@ -40,38 +40,45 @@ export const SpeedDial = () => {
   const [items, setItems] = useAtom(bookmarksState);
 
   useEffect(() => {
-    bookmarks.getTree().then((tree) => setItems(tree));
-  }, []);
+    const timeout = setTimeout(() => {
+      const tree = bookmarks.getTree();
+      setItems(tree);
+    }, 300);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [setItems]);
 
   const { collisionDetection, onDragEnd } = useCollisionDetection(16);
 
-  const handleDragStart = useCallback(async (event: DragStartEvent) => {
+  const handleDragStart = useCallback((event: DragStartEvent) => {
     const { active } = event;
 
-    const [current] = await bookmarks.get(String(active?.id));
+    const [current] = bookmarks.get(String(active?.id));
     setActiveId(current);
   }, []);
 
   const handleDragEnd = useCallback(
-    async (event: DragEndEvent) => {
+    (event: DragEndEvent) => {
       const { active, over } = event;
 
       const overId = String(over?.id);
       const activeId = String(active?.id);
 
       if (over && activeId !== overId) {
-        const [newIndex] = await bookmarks.get(parseDndId(overId));
+        const [newIndex] = bookmarks.get(parseDndId(overId));
         bookmarks.move(activeId, {
           index: newIndex?.index ?? 0,
         });
-        setItems(await bookmarks.getTree());
+        setItems(bookmarks.getTree());
       }
 
       onDragEnd();
 
       setActiveId(null);
     },
-    [onDragEnd]
+    [onDragEnd, setItems]
   );
 
   const sensors = useSensors(
@@ -82,24 +89,27 @@ export const SpeedDial = () => {
     })
   );
 
-  const handleDragOver = useCallback(async (event: DragOverEvent) => {
-    const { over, active } = event;
+  const handleDragOver = useCallback(
+    (event: DragOverEvent) => {
+      const { over, active } = event;
 
-    const overId = String(over?.id);
-    const activeId = String(active?.id);
+      const overId = String(over?.id);
+      const activeId = String(active?.id);
 
-    const isParent = Boolean(over?.data.current?.sortable?.containerId);
+      const isParent = Boolean(over?.data.current?.sortable?.containerId);
 
-    if (over && !over.disabled && activeId !== overId) {
-      const [newIndex] = await bookmarks.get(parseDndId(overId));
+      if (over && !over.disabled && activeId !== overId) {
+        const [newIndex] = bookmarks.get(parseDndId(overId));
 
-      bookmarks.move(activeId, {
-        index: newIndex?.index ?? 0,
-        parentId: isParent ? newIndex?.parentId : newIndex?.id,
-      });
-      setItems(await bookmarks.getTree());
-    }
-  }, []);
+        bookmarks.move(activeId, {
+          index: newIndex?.index ?? 0,
+          parentId: isParent ? newIndex?.parentId : newIndex?.id,
+        });
+        setItems(bookmarks.getTree());
+      }
+    },
+    [setItems]
+  );
 
   return (
     <div className="flex justify-center items-center">
