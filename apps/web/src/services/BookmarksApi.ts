@@ -1,4 +1,5 @@
 import {
+  BookmarksApiStore,
   BookmarkTreeNode,
   CreateDetails,
   Destination,
@@ -9,6 +10,7 @@ import { BookmarkTreeMap } from "./BookmarkTreeMap";
 
 export class BookmarksApi {
   private nodes = new BookmarkTreeMap();
+
   private rootParentId = "root________";
 
   public readonly onCreated = new WebExtEventEmitter();
@@ -47,7 +49,7 @@ export class BookmarksApi {
 
         return null;
       })
-      .filter(Boolean) as BookmarkTreeNode[];
+      .filter(Boolean);
   }
 
   public getChildren(id: string): BookmarkTreeNode[] {
