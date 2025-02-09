@@ -5,17 +5,16 @@ import {
   UpdateChanges,
 } from "../types/BookmarkTreeNode";
 import { BookmarkTreeMap } from "./BookmarkTreeMap";
-import { WebExtEventEmitter } from "./WebExtEventEmitter";
 
 export class BookmarksApi {
   private nodes = new BookmarkTreeMap();
-
   private rootParentId = "root________";
 
-  public readonly onCreated = new WebExtEventEmitter();
-  public readonly onRemoved = new WebExtEventEmitter();
-  public readonly onChanged = new WebExtEventEmitter();
-  public readonly onMoved = new WebExtEventEmitter();
+  public async init() {
+    await this.nodes.init();
+
+    return this
+  }
 
   private getNode(id: string) {
     return this.nodes.get(id);
@@ -138,7 +137,6 @@ export class BookmarksApi {
       });
     }
 
-    this.onCreated.emit(id, { ...newNode });
     return newNode;
   }
 
@@ -149,7 +147,7 @@ export class BookmarksApi {
       throw new Error("Node not found");
     }
 
-    const oldParentId = node.parentId!;
+    const oldParentId = node?.parentId ?? this.rootParentId;
     const newParentId = destination.parentId || oldParentId;
     const newIndex =
       destination.index ?? this.getSortedChildren(newParentId).length;
@@ -172,13 +170,6 @@ export class BookmarksApi {
     const movedNode = { ...node, parentId: newParentId, index: newIndex };
     this.nodes.set(id, movedNode);
 
-    this.onMoved.emit(id, {
-      parentId: newParentId,
-      index: newIndex,
-      oldParentId,
-      oldIndex: node.index,
-    });
-
     return movedNode;
   }
 
@@ -193,11 +184,6 @@ export class BookmarksApi {
 
     this.nodes.set(id, updatedNode);
 
-    this.onChanged.emit(id, {
-      title: updatedNode.title,
-      url: updatedNode.url,
-    });
-
     return updatedNode;
   }
 
@@ -209,7 +195,7 @@ export class BookmarksApi {
       throw new Error("Cannot remove non-empty folder");
     }
 
-    const parentId = node.parentId!;
+    const parentId = node.parentId ?? this.rootParentId;
     this.getSortedChildren(parentId)
       .filter((n) => (n.index ?? 0) > (node.index ?? 0))
       .forEach((n) =>
@@ -217,25 +203,22 @@ export class BookmarksApi {
       );
 
     this.nodes.delete(id);
-
-    this.onRemoved.emit(id, {
-      parentId,
-      index: node.index,
-      node,
-    });
   }
 
   public removeTree(id: string): void {
     const node = this.nodes.get(id);
     if (!node) throw new Error("Node not found");
 
-    const parentId = node.parentId!;
+    const parentId = node.parentId ?? this.rootParentId;
     const queue = [id];
     while (queue.length > 0) {
-      const currentId = queue.pop()!;
-      const children = this.getSortedChildren(currentId);
-      children.forEach((child) => queue.push(child.id));
-      this.nodes.delete(currentId);
+      const currentId = queue.pop();
+
+      if (currentId) {
+        const children = this.getSortedChildren(currentId);
+        children.forEach((child) => queue.push(child.id));
+        this.nodes.delete(currentId);
+      }
     }
 
     this.getSortedChildren(parentId)
@@ -243,11 +226,5 @@ export class BookmarksApi {
       .forEach((n) =>
         this.nodes.set(n.id, { ...n, index: (n.index ?? 1) - 1 })
       );
-
-    this.onRemoved.emit(id, {
-      parentId,
-      index: node.index,
-      node,
-    });
   }
 }

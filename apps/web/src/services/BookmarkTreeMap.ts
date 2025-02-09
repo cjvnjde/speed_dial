@@ -27,10 +27,6 @@ export class BookmarkTreeMap {
   private readonly storeName = "bookmarks";
   private actionsQueue: Action[] = [];
 
-  constructor() {
-    this.init();
-  }
-
   private async getDB(): Promise<IDBPDatabase<BookmarkDB>> {
     if (this.db) {
       return this.db;

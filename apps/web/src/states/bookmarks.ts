@@ -5,3 +5,4 @@ import { atom } from "jotai";
 export const bookmarks = new BookmarksApi();
 
 export const bookmarksState = atom<BookmarkTreeNode[]>([]);
+

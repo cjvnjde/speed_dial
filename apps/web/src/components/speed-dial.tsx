@@ -40,14 +40,9 @@ export const SpeedDial = () => {
   const [items, setItems] = useAtom(bookmarksState);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      const tree = bookmarks.getTree();
-      setItems(tree);
-    }, 300);
-
-    return () => {
-      clearTimeout(timeout);
-    };
+    bookmarks.init().then((bookmarksApi) => {
+      setItems(bookmarksApi.getTree());
+    })
   }, [setItems]);
 
   const { collisionDetection, onDragEnd } = useCollisionDetection(16);
