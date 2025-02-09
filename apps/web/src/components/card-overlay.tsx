@@ -1,10 +1,9 @@
-import { cardStyle } from "./card/card-style";
-import { SortableItemProps } from "./card/card-props";
+import { CardContent, cardStyle, SortableItemProps } from "./card";
 
 export const CardOverlay = ({ bookmark }: Omit<SortableItemProps, "id">) => {
   return (
     <div className={cardStyle({ dragging: true, overlay: true })}>
-      {bookmark.title}
+      <CardContent bookmark={bookmark} />
     </div>
   );
 };

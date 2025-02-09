@@ -1,12 +1,11 @@
 import {
-  BookmarksApiStore,
   BookmarkTreeNode,
   CreateDetails,
   Destination,
   UpdateChanges,
 } from "../types/BookmarkTreeNode";
-import { WebExtEventEmitter } from "./WebExtEventEmitter";
 import { BookmarkTreeMap } from "./BookmarkTreeMap";
+import { WebExtEventEmitter } from "./WebExtEventEmitter";
 
 export class BookmarksApi {
   private nodes = new BookmarkTreeMap();

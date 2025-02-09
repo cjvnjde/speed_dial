@@ -5,7 +5,7 @@ import { useOpenDelay } from "../hooks/useOpenDelay";
 import { activeGridIdState } from "../states/activeGridIdState";
 import { BookmarkTreeNode } from "../types/BookmarkTreeNode";
 import { generateDndId } from "../utils/dndId";
-import { Card } from "./card/card";
+import { Card } from "./card";
 import { CardAddNew } from "./card-add-new";
 
 type SortingGridProps = {
@@ -33,9 +33,7 @@ export const SortingGrid = ({ items, id }: SortingGridProps) => {
         disabled={!isOpen}
       >
         {items.map((bookmark) => (
-          <Card key={bookmark.id} id={bookmark.id} bookmark={bookmark}>
-            {bookmark.title}
-          </Card>
+          <Card key={bookmark.id} id={bookmark.id} bookmark={bookmark} />
         ))}
       </SortableContext>
       <CardAddNew parentId={id} />

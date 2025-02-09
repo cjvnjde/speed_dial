@@ -12,12 +12,12 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { useCallback, useEffect, useState } from "react";
-import { useCollisionDetection } from "../../hooks/useCollisionDetection";
-import { CardOverlay } from "../card-overlay";
-import { SortingGrid } from "../sorting-grid";
-import { bookmarks, bookmarksState } from "../../states/bookmarks";
-import { BookmarkTreeNode } from "../../types/BookmarkTreeNode";
-import { parseDndId } from "../../utils/dndId";
+import { useCollisionDetection } from "../hooks/useCollisionDetection";
+import { CardOverlay } from "./card-overlay";
+import { SortingGrid } from "./sorting-grid";
+import { bookmarks, bookmarksState } from "../states/bookmarks";
+import { BookmarkTreeNode } from "../types/BookmarkTreeNode";
+import { parseDndId } from "../utils/dndId";
 import { useAtom } from "jotai";
 
 const dropAnimation: DropAnimation = {

@@ -1,4 +1,4 @@
-import { cardStyle } from "./card/card-style";
+import { cardStyle } from "./card";
 import { IconPlus } from "@tabler/icons-react";
 import { OverlayPopup } from "./overlay-popup";
 import { useState } from "react";
