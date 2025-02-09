@@ -1,7 +1,7 @@
 import { Input as HUInput } from "@headlessui/react";
 import { InputHTMLAttributes, ReactNode, type Ref } from "react";
-import { InputWrapper } from "./input-wrapper";
 import { tv } from "tailwind-variants";
+import { InputWrapper } from "./input-wrapper";
 
 export const inputStyle = tv({
   base: "block h-8 w-full border-0 bg-transparent text-sm outline-none !ring-0 autofill:bg-transparent",

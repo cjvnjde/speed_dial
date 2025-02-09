@@ -4,9 +4,11 @@ import { OverlayPopup } from "./overlay-popup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { bookmarks, bookmarksState } from "../states/bookmarks";
-import { Input } from "./input";
-import { WithLabel } from "./with-label";
 import { useSetAtom } from "jotai";
+import {
+  WithLabel,
+  Input,
+} from "@the-ultimate-homepage-bookmarks-speed-dial-hub/ui";
 
 type CardAddNewProps = {
   parentId: string | number;
