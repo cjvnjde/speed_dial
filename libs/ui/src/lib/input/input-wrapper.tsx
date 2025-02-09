@@ -2,7 +2,7 @@ import { ReactElement, ReactNode } from "react";
 import { tv } from "tailwind-variants";
 
 const inputWrapperStyle = tv({
-  base: "flex flex-row bg-white items-center overflow-hidden rounded border px-2 transition",
+  base: "flex flex-row bg-input-background border-input-border items-center overflow-hidden rounded border px-2 gap-2 transition text-input-text",
   variants: {
     disabled: {
       true: null,
@@ -11,12 +11,6 @@ const inputWrapperStyle = tv({
     hasError: {
       true: null,
       false: null,
-    },
-    startIcon: {
-      true: "gap-2 pl-2",
-    },
-    endIcon: {
-      true: "gap-2 pr-2",
     },
   },
   defaultVariants: {
@@ -60,8 +54,6 @@ export const InputWrapper = ({
     <label
       className={inputWrapperStyle({
         disabled: isDisabled,
-        startIcon: Boolean(startIcon),
-        endIcon: Boolean(endIcon),
         hasError: Boolean(hasError),
         className,
       })}

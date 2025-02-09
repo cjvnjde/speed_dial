@@ -5,7 +5,7 @@ export const cardStyle = tv({
   variants: {
     dragging: {
       true: "cursor-grabbing",
-      false: "cursor-pointer hover:scale-105",
+      false: "cursor-pointer hover:border-card-border-hover",
     },
     hovered: {
       true: "border border-slate-500",

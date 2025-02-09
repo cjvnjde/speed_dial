@@ -8,7 +8,7 @@ import { SortableItemProps } from "./card-props";
 import { useCallback, MouseEvent } from "react";
 import { useActionOnHold } from "../../hooks/useActianOnHold";
 import { useAtom } from "jotai";
-import { OverlayPopup } from "../overlay-popup";
+import { FolderModal } from "../folder-modal";
 import { SortingGrid } from "../sorting-grid";
 import { activeGridIdState } from "../../states/activeGridIdState";
 
@@ -88,7 +88,7 @@ export const Card = ({ id, bookmark }: SortableItemProps) => {
         >
           <CardContent bookmark={bookmark} />
         </button>
-        <OverlayPopup
+        <FolderModal
           isOpen={isOpen}
           onClose={handlePopupClose}
           isActive={
@@ -96,7 +96,7 @@ export const Card = ({ id, bookmark }: SortableItemProps) => {
           }
         >
           <SortingGrid items={bookmark.children ?? []} id={bookmark.id} />
-        </OverlayPopup>
+        </FolderModal>
       </>
     );
   }
