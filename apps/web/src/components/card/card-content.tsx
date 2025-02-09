@@ -1,12 +1,16 @@
 import { IconFolder } from "@tabler/icons-react";
 import { SortableItemProps } from "./card-props";
+import { MoreOptions } from "../more-options";
 
 export const CardContent = ({
   bookmark,
 }: Pick<SortableItemProps, "bookmark">) => {
   if (bookmark.type === "folder") {
     return (
-      <div className="flex items-center flex-col w-full h-full">
+      <div className="relative flex items-center flex-col w-full h-full">
+        <MoreOptions className="absolute top-0 right-0">
+          <MoreOptions.Option>test</MoreOptions.Option>
+        </MoreOptions>
         <div className="flex grow justify-center items-center">
           <IconFolder size={48} />
         </div>
@@ -16,7 +20,10 @@ export const CardContent = ({
   }
 
   return (
-    <div className="flex items-center overflow-hidden flex-col w-full h-full">
+    <div className="relative flex items-center overflow-hidden flex-col w-full h-full">
+      <MoreOptions className="absolute top-0 right-0">
+        <MoreOptions.Option>test</MoreOptions.Option>
+      </MoreOptions>
       <div className="flex overflow-hidden w-full grow justify-center items-center">
         <span className="truncate">{bookmark.url}</span>
       </div>

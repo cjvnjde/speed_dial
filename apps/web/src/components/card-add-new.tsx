@@ -5,10 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { bookmarks, bookmarksState } from "../states/bookmarks";
 import { useSetAtom } from "jotai";
-import {
-  WithLabel,
-  Input,
-} from "@the-ultimate-homepage-bookmarks-speed-dial-hub/ui";
+import { WithLabel, Input } from "@libs/ui";
 
 type CardAddNewProps = {
   parentId: string | number;

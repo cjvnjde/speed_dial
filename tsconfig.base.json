@@ -16,9 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@the-ultimate-homepage-bookmarks-speed-dial-hub/ui": [
-        "libs/ui/src/index.ts"
-      ]
+      "@libs/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
