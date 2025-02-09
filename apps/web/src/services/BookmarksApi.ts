@@ -38,16 +38,15 @@ export class BookmarksApi {
     const ids = Array.isArray(idOrIdList) ? idOrIdList : [idOrIdList];
 
     return ids
-      .map((id) => {
+      .reduce<BookmarkTreeNode[]>((acc, id) => {
         const node = this.getNode(id);
 
         if (node) {
-          return this.buildTree(node);
+          acc.push(this.buildTree(node))
         }
 
-        return null;
-      })
-      .filter(Boolean);
+        return acc
+      }, [])
   }
 
   public getChildren(id: string): BookmarkTreeNode[] {
