@@ -10,8 +10,9 @@ import { useAtom } from "jotai";
 import { OverlayPopup } from "../overlay-popup";
 import { SortingGrid } from "../sorting-grid";
 import { activeGridIdState } from "../../states/activeGridIdState";
+import { IconFolder } from "@tabler/icons-react";
 
-export const Card = ({ id, children, bookmark }: SortableItemProps) => {
+export const Card = ({ id, bookmark }: SortableItemProps) => {
   const {
     active,
     attributes,
@@ -78,7 +79,12 @@ export const Card = ({ id, children, bookmark }: SortableItemProps) => {
           {...attributes}
           {...listeners}
         >
-          {children}
+          <div className="flex items-center flex-col w-full h-full">
+            <div className="flex grow justify-center items-center">
+              <IconFolder size={48} />
+            </div>
+            <span>{bookmark.title}</span>
+          </div>
         </button>
         <OverlayPopup
           isOpen={isOpen}
@@ -107,7 +113,13 @@ export const Card = ({ id, children, bookmark }: SortableItemProps) => {
       {...attributes}
       {...listeners}
     >
-      {children}
+      <div className="flex items-center overflow-hidden flex-col w-full h-full">
+        <div className="flex overflow-hidden w-full grow justify-center items-center">
+          <span className="truncate">{bookmark.url}</span>
+        </div>
+
+        <span className="truncate w-full text-center">{bookmark.title}</span>
+      </div>
     </a>
   );
 };

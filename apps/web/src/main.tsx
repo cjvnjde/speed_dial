@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <StrictMode>
-    <div className="h-screen bg-background w-full ">
+    <div className="min-h-screen bg-background w-full">
       <SpeedDial />
     </div>
   </StrictMode>

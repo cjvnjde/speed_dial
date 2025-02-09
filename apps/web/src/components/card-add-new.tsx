@@ -77,15 +77,15 @@ export const CardAddNew = ({ parentId }: CardAddNewProps) => {
       <AddNewPopup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onCreate={async (data) => {
-          await bookmarks.create({
+        onCreate={(data) => {
+          bookmarks.create({
             parentId: String(parentId),
             title: data.title,
             url: data.url,
             type: data.type,
           });
 
-          setItems(await bookmarks.getTree());
+          setItems(bookmarks.getTree());
         }}
       />
     </>

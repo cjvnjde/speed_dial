@@ -5,7 +5,7 @@ export const cardStyle = tv({
   variants: {
     dragging: {
       true: "cursor-grabbing",
-      false: "cursor-default hover:scale-105",
+      false: "cursor-pointer hover:scale-105",
     },
     hovered: {
       true: "border border-slate-500",
@@ -18,7 +18,7 @@ export const cardStyle = tv({
     type: {
       folder: "bg-folder-background",
       bookmark: "bg-bookmark-background",
-      new: "bg-bookmark-background opacity-30 cursor-pointer",
+      new: "bg-bookmark-background opacity-30",
     },
   },
   compoundVariants: [

@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --write .",
-    "serve:web": "npx nx serve web"
+    "serve:web": "npx nx serve web",
+    "dev": "pnpm run serve:web"
   },
   "private": true,
   "type": "module",
