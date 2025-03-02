@@ -11,14 +11,14 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useCollisionDetection } from "../hooks/useCollisionDetection";
 import { CardOverlay } from "./card-overlay";
 import { SortingGrid } from "./sorting-grid";
 import { bookmarks, bookmarksState } from "../states/bookmarks";
 import { BookmarkTreeNode } from "../types/BookmarkTreeNode";
 import { parseDndId } from "../utils/dndId";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 
 const dropAnimation: DropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({
@@ -35,6 +35,102 @@ const dropAnimation: DropAnimation = {
   }),
 };
 
+function transformJSONtoBookmarks(
+  data: any[],
+  parent?: any
+): BookmarkTreeNode[] {
+  const parentId = parent?.guid ?? "root________";
+
+  return data.map<BookmarkTreeNode>((item: any, index) => {
+    if ("children" in item) {
+      return {
+        id: item.guid,
+        parentId,
+        index,
+        type: "folder",
+        title: item.title,
+        dateAdded: item.dateAdded,
+        dateGroupModified: item.lastModified,
+        children: transformJSONtoBookmarks(item.children, item),
+      };
+    }
+
+    return {
+      id: item.guid,
+      parentId,
+      index,
+      url: item.uri,
+      title: item.title,
+      dateAdded: item.dateAdded,
+      dateGroupModified: item.lastModified,
+      type: "bookmark",
+    };
+  });
+}
+
+const ImportBookmarks = () => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const setItems = useSetAtom(bookmarksState);
+
+  return (
+    <>
+      <input
+        ref={inputRef}
+        type="file"
+        accept=".json"
+        style={{ display: "none" }}
+        onChange={(event) => {
+          const files = (event.target as HTMLInputElement).files;
+          if (files && files.length > 0) {
+            const file = files[0]; // Get the first selected file
+            if (
+              file.type === "application/json" ||
+              file.name.endsWith(".json")
+            ) {
+              const reader = new FileReader();
+              reader.onload = (loadEvent) => {
+                try {
+                  const fileContent = JSON.parse(
+                    loadEvent.target?.result as string
+                  );
+
+                  bookmarks.setTree(
+                    transformJSONtoBookmarks(
+                      (fileContent as any).children.find(
+                        (item: any) => item.guid === "toolbar_____"
+                      )?.children
+                    )
+                  );
+
+                  setItems(bookmarks.getTree());
+                } catch (error) {
+                  console.error("Error parsing JSON:", error);
+                }
+              };
+              reader.onerror = (readError) => {
+                console.error("Error reading file:", readError);
+              };
+              reader.readAsText(file);
+            } else {
+              console.error("Selected file is not a JSON file.");
+            }
+          }
+        }}
+      />
+      <button
+        type="button"
+        className="text-white"
+        onClick={() => {
+          inputRef.current?.click();
+        }}
+      >
+        Import
+      </button>
+    </>
+  );
+};
+
 export const SpeedDial = () => {
   const [activeId, setActiveId] = useState<null | BookmarkTreeNode>(null);
   const [items, setItems] = useAtom(bookmarksState);
@@ -42,7 +138,7 @@ export const SpeedDial = () => {
   useEffect(() => {
     bookmarks.init().then((bookmarksApi) => {
       setItems(bookmarksApi.getTree());
-    })
+    });
   }, [setItems]);
 
   const { collisionDetection, onDragEnd } = useCollisionDetection(16);
@@ -107,7 +203,7 @@ export const SpeedDial = () => {
   );
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="relative flex justify-center items-center">
       <DndContext
         collisionDetection={collisionDetection}
         onDragEnd={handleDragEnd}
@@ -125,6 +221,9 @@ export const SpeedDial = () => {
           {activeId ? <CardOverlay bookmark={activeId} /> : null}
         </DragOverlay>
       </DndContext>
+      <div className="fixed bottom-0 right-0">
+        <ImportBookmarks />
+      </div>
     </div>
   );
 };

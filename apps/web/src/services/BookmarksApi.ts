@@ -13,7 +13,21 @@ export class BookmarksApi {
   public async init() {
     await this.nodes.init();
 
-    return this
+    return this;
+  }
+
+  public async setTree(tree: BookmarkTreeNode[], parent = this.rootParentId) {
+    tree.forEach((item) => {
+      if (
+        "children" in item &&
+        item.children !== undefined &&
+        item.type === "folder"
+      ) {
+        this.setTree(item.children, item.id);
+      }
+
+      this.nodes.set(parent, item);
+    });
   }
 
   private getNode(id: string) {
@@ -37,16 +51,15 @@ export class BookmarksApi {
   public get(idOrIdList: string | string[]): BookmarkTreeNode[] {
     const ids = Array.isArray(idOrIdList) ? idOrIdList : [idOrIdList];
 
-    return ids
-      .reduce<BookmarkTreeNode[]>((acc, id) => {
-        const node = this.getNode(id);
+    return ids.reduce<BookmarkTreeNode[]>((acc, id) => {
+      const node = this.getNode(id);
 
-        if (node) {
-          acc.push(this.buildTree(node))
-        }
+      if (node) {
+        acc.push(this.buildTree(node));
+      }
 
-        return acc
-      }, [])
+      return acc;
+    }, []);
   }
 
   public getChildren(id: string): BookmarkTreeNode[] {
