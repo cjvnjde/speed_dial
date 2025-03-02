@@ -22,7 +22,7 @@ export const FolderModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalPanel ref={elementRef} size="full">
+      <ModalPanel ref={elementRef} size="lg">
         {children}
       </ModalPanel>
     </Modal>

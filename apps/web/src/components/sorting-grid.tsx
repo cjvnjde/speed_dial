@@ -24,7 +24,7 @@ export const SortingGrid = ({ items, id }: SortingGridProps) => {
   return (
     <div
       ref={setNodeRef}
-      className="grid p-4 grow auto-rows-[160px] grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] justify-items-center gap-4"
+      className="grid p-4 auto-rows-[160px] grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] justify-items-center gap-4 grow"
     >
       <SortableContext
         items={items}

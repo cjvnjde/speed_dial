@@ -3,12 +3,12 @@ import { PropsWithChildren, Ref } from "react";
 import { tv, VariantProps } from "tailwind-variants";
 
 const modalPanelStyle = tv({
-  base: "p-4 w-full border border-popup-border rounded-lg bg-popup-background duration-300 ease-out data-[closed]:scale-95 data-[closed]:opacity-0",
+  base: "p-4 w-full border border-popup-border rounded-lg bg-popup-background duration-300 ease-out data-[closed]:scale-95 data-[closed]:opacity-0 my-6 mx-12",
   variants: {
     size: {
       md: "max-w-[424px]",
-      lg: "max-w-[1000px]",
-      full: "max-w-[calc(100%_-_64px)]",
+      lg: "max-w-[1200px]",
+      full: "max-w-full",
     },
   },
   defaultVariants: {
