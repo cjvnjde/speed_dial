@@ -1,7 +1,7 @@
 name: deployment
 
 env:
-  BASE: "/the-ultimate-homepage-bookmarks-speed-dial-hub"
+  BASE: "/speed_dial"
 
 on:
   push:
